@@ -1,10 +1,10 @@
 const express = require('express');
-const {getBook, createBook, updateBook, deleteBook} = require('../models/book_model');
+const {createOrder, deleteOrder, getOrder, updateOrder} = require('../models/order_model');
 
 const router = express.Router();
 
 router.get('/', function(req, res) {
-    getBook()
+    getOrder()
         .then(response => {
             res.status(200).send(response);
         })
@@ -14,7 +14,7 @@ router.get('/', function(req, res) {
 });
 
 router.post('/', function(req, res) {
-    createBook(req.body)
+    createOrder(req.body)
         .then(response => {
             res.status(200).send(response);
         })
@@ -24,7 +24,7 @@ router.post('/', function(req, res) {
 });
 
 router.post('/:id', function(req, res) {
-    updateBook(req.body)
+    updateOrder(req.body)
         .then(response => {
             res.status(200).send(response);
         })
@@ -34,7 +34,7 @@ router.post('/:id', function(req, res) {
 });
 
 router.delete('/:id', function(req, res) {
-    deleteBook(req.params.id)
+    deleteOrder(req.params.id)
         .then(response => {
             res.status(200).send(response);
         })
