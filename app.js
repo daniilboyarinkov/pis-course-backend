@@ -14,6 +14,8 @@ const ordersRouter = require('./routes/orders');
 const librariesRouter = require('./routes/libraries');
 const storeRouter = require('./routes/store');
 const loginRouter = require('./routes/login');
+const statisticRouter = require('./routes/statistic');
+const updateRouter = require('./routes/update');
 
 const app = express();
 
@@ -41,5 +43,7 @@ app.use('/orders', ordersRouter);
 app.use('/libraries', librariesRouter);
 app.use('/store', storeRouter);
 app.use('/login', loginRouter);
+app.use('/statistic', statisticRouter);
+app.use('/update', updateRouter);
 
 module.exports = app;

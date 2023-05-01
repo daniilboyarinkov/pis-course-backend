@@ -23,7 +23,7 @@ exports.getBook = (id) => {
     return new Promise(function (resolve, reject) {
         pool.query(GET_BOOK_QUERY, [id], (error, results) => {
             if (error) reject(error);
-            resolve(results.rows);
+            resolve(results.rows[0]);
         })
     })
 }

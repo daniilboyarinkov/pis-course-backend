@@ -99,5 +99,24 @@ exports.UPDATE_STORE_QUERY = 'update store \n' +
 exports.DELETE_STORE_QUERY = 'delete from store\n' +
     'where library_id = $1 and book_id = $2;';
 
+// Login
 exports.READER_LOGIN = 'SELECT * FROM check_login_and_pass_for_readers($1, $2)';
 exports.EMPLOYEE_LOGIN = 'SELECT * FROM check_login_and_pass_for_employees($1, $2)';
+
+// Statistic
+exports.BOOK_STATISTIC = 'select book_id, to_char(registration_date, \'DD.MM.YYYY\'), title, author, count(orders.book_id = $1) as taken_count\n' +
+    'from books join orders using(book_id) \n' +
+    'where book_id = $1\n' +
+    'group by books.book_id;'
+exports.ORDERS_STATISTIC = 'select order_status, count(order_status)\n' +
+    'from orders\n' +
+    'where library_id = $1\n' +
+    'group by order_status;'
+exports.USER_STATISTIC = 'select CONCAT(first_name, \' \',last_name) as full_name, order_status, count(order_status)\n' +
+    'from orders join readers using(reader_id)\n' +
+    'where reader_id = $1\n' +
+    'group by first_name, last_name, order_status;'
+
+// Update
+exports.UPDATE_QUERY = 'update orders set order_status = \'overdued\' where return_date < now()  - interval \'1 day\'  and isperpetual = false;\n' +
+    'select * from orders;'
