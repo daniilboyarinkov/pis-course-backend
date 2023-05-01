@@ -1,10 +1,10 @@
 const express = require('express');
-const {createOrder, deleteOrder, getOrder, updateOrder} = require('../models/order_model');
+const {getAllOrders, createOrder, deleteOrder, getOrder, updateOrder} = require('../models/order_model');
 
 const router = express.Router();
 
 router.get('/', function(req, res) {
-    getOrder()
+    getAllOrders()
         .then(response => {
             res.status(200).send(response);
         })
@@ -15,6 +15,16 @@ router.get('/', function(req, res) {
 
 router.post('/', function(req, res) {
     createOrder(req.body)
+        .then(response => {
+            res.status(200).send(response);
+        })
+        .catch(error => {
+            res.status(500).send(error);
+        })
+});
+
+router.get('/:id', function(req, res) {
+    getOrder(req.params.id)
         .then(response => {
             res.status(200).send(response);
         })

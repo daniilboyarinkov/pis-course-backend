@@ -1,10 +1,10 @@
 const express = require('express');
-const {createEvent, getEvent, updateEvent, deleteEvent} = require('../models/event_model');
+const {getAllEvent, createEvent, getEvent, updateEvent, deleteEvent} = require('../models/event_model');
 
 const router = express.Router();
 
 router.get('/', function(req, res) {
-    getEvent()
+    getAllEvent()
         .then(response => {
             res.status(200).send(response);
         })
@@ -15,6 +15,16 @@ router.get('/', function(req, res) {
 
 router.post('/', function(req, res) {
     createEvent(req.body)
+        .then(response => {
+            res.status(200).send(response);
+        })
+        .catch(error => {
+            res.status(500).send(error);
+        })
+});
+
+router.get('/:id', function(req, res) {
+    getEvent(req.params.id, req.body)
         .then(response => {
             res.status(200).send(response);
         })

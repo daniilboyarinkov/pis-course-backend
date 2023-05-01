@@ -1,10 +1,10 @@
 const express = require('express');
-const {getEmployee, createEmployee, deleteEmployee, updateEmployee} = require('../models/employee_model');
+const {getAllEmployee, getEmployee, createEmployee, deleteEmployee, updateEmployee} = require('../models/employee_model');
 
 const router = express.Router();
 
 router.get('/', function(req, res) {
-    getEmployee()
+    getAllEmployee()
         .then(response => {
             res.status(200).send(response);
         })
@@ -15,6 +15,16 @@ router.get('/', function(req, res) {
 
 router.post('/', function(req, res) {
     createEmployee(req.body)
+        .then(response => {
+            res.status(200).send(response);
+        })
+        .catch(error => {
+            res.status(500).send(error);
+        })
+});
+
+router.get('/:id', function(req, res) {
+    getEmployee(req.params.id, req.body)
         .then(response => {
             res.status(200).send(response);
         })

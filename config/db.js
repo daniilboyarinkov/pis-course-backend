@@ -1,7 +1,7 @@
 module.exports = {
     user: 'danii',
     host: 'localhost',
-    database: 'db_name',
+    database: 'pis-course',
     password: '',
     port: 5432,
 };

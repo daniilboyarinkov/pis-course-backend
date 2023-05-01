@@ -1,12 +1,27 @@
-import db_config from '../config/db'
-import {CREATE_LIBRARY_QUERY, DELETE_LIBRARY_QUERY, GET_LIBRARY_QUERY, UPDATE_LIBRARY_QUERY} from '../config/queries';
+const db_config = require('../config/db')
+const {
+    CREATE_LIBRARY_QUERY,
+    DELETE_LIBRARY_QUERY,
+    GET_ALL_LIBRARY_QUERY,
+    GET_LIBRARY_QUERY,
+    UPDATE_LIBRARY_QUERY
+} = require('../config/queries');
 
 const Pool = require('pg').Pool
 const pool = new Pool(db_config);
 
-exports.getLibrary = () => {
+exports.getLibrary = (id) => {
     return new Promise(function (resolve, reject) {
-        pool.query(GET_LIBRARY_QUERY, (error, results) => {
+        pool.query(GET_LIBRARY_QUERY, [id], (error, results) => {
+            if (error) reject(error);
+            resolve(results.rows);
+        })
+    })
+}
+
+exports.getAllLibrary = () => {
+    return new Promise(function (resolve, reject) {
+        pool.query(GET_ALL_LIBRARY_QUERY, (error, results) => {
             if (error) reject(error);
             resolve(results.rows);
         })
@@ -15,8 +30,8 @@ exports.getLibrary = () => {
 
 exports.createLibrary = (body) => {
     return new Promise(function (resolve, reject) {
-        // const { } = body
-        pool.query(CREATE_LIBRARY_QUERY, [],
+        const { address } = body
+        pool.query(CREATE_LIBRARY_QUERY, [address],
             (error, results) => {
                 if (error) reject(error?.message);
                 if (results?.rowCount === 0) reject("Couldn't create a new book")
@@ -25,10 +40,10 @@ exports.createLibrary = (body) => {
     })
 }
 
-exports.updateLibrary = (body) => {
+exports.updateLibrary = (id, body) => {
     return new Promise(function (resolve, reject) {
-        // const { } = body
-        pool.query(UPDATE_LIBRARY_QUERY, [],
+        const { address } = body
+        pool.query(UPDATE_LIBRARY_QUERY, [address, id],
             (error, results) => {
                 if (error) reject(error?.message);
                 if (results?.rowCount === 0) reject("Couldn't create a new book")

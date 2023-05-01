@@ -1,10 +1,10 @@
 const express = require('express');
-const {getReader, createReader, updateReader, deleteReader} = require('../models/reader_model');
+const {getAllReaders, getReader, createReader, updateReader, deleteReader} = require('../models/reader_model');
 
 const router = express.Router();
 
 router.get('/', function(req, res) {
-    getReader()
+    getAllReaders()
         .then(response => {
             res.status(200).send(response);
         })
@@ -15,6 +15,16 @@ router.get('/', function(req, res) {
 
 router.post('/', function(req, res) {
     createReader(req.body)
+        .then(response => {
+            res.status(200).send(response);
+        })
+        .catch(error => {
+            res.status(500).send(error);
+        })
+});
+
+router.get('/:id', function(req, res) {
+    getReader(req.params.id, req.body)
         .then(response => {
             res.status(200).send(response);
         })
