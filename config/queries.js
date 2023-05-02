@@ -117,7 +117,7 @@ exports.ORDERS_STATISTIC = 'select order_status, count(order_status)\n' +
     'from orders\n' +
     'where library_id = $1\n' +
     'group by order_status;'
-exports.READER_STATISTIC = 'select distinct CONCAT(first_name, ' ',last_name) as full_name,\n' +
+exports.READER_STATISTIC = 'select distinct CONCAT(first_name, last_name) as full_name,\n' +
 	'(select count(order_status) from orders where order_status = \'opened\' and reader_id = $1) as opened_count,\n' +
     '(select count(order_status) from orders where order_status = \'closed\' and reader_id = $1) as closed_count,\n' +
 	'(select count(order_status) from orders where order_status = \'overdued\'and reader_id = $1) as overdued_count\n' +
