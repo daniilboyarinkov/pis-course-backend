@@ -23,7 +23,7 @@ router.get('/library/:id', function(req, res) {
         })
 });
 
-router.get('/user/:id', function(req, res) {
+router.get('/reader/:id', function(req, res) {
     getUserStatistic(req.params.id)
         .then(response => {
             res.status(200).send(response);

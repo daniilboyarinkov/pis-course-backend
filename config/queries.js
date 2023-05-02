@@ -112,7 +112,7 @@ exports.ORDERS_STATISTIC = 'select order_status, count(order_status)\n' +
     'from orders\n' +
     'where library_id = $1\n' +
     'group by order_status;'
-exports.USER_STATISTIC = 'select CONCAT(first_name, \' \',last_name) as full_name, order_status, count(order_status)\n' +
+exports.READER_STATISTIC = 'select CONCAT(first_name, \' \',last_name) as full_name, order_status, count(order_status)\n' +
     'from orders join readers using(reader_id)\n' +
     'where reader_id = $1\n' +
     'group by first_name, last_name, order_status;'
