@@ -112,21 +112,19 @@ exports.EMPLOYEE_LOGIN = 'SELECT * FROM check_login_and_pass_for_employees($1, $
 exports.BOOK_STATISTIC = 'select book_id, to_char(registration_date, \'DD.MM.YYYY\'), title, author, count(orders.book_id = $1) as taken_count\n' +
     'from books join orders using(book_id) \n' +
     'where book_id = $1\n' +
-    'group by books.book_id;';
-exports.ORDERS_STATISTIC = 'select distinct\n'
-	'(select count(order_status) from orders where order_status = \'opened\' and library_id = $1) as opened_count,\n' +
-    '(select count(order_status) from orders where order_status = \'closed\' and library_id = $1) as closed_count,\n' +
-	'(select count(order_status) from orders where order_status = \'overdued\'and library_id = $1) as overdued_count\n' +
-	'from orders\n' +
-    'where library_id = $1';
+    'group by books.book_id;'
+exports.ORDERS_STATISTIC = 'select order_status, count(order_status)\n' +
+    'from orders\n' +
+    'where library_id = $1\n' +
+    'group by order_status;'
 exports.USER_STATISTIC = 'select distinct CONCAT(first_name, ' ',last_name) as full_name,\n' +
 	'(select count(order_status) from orders where order_status = \'opened\' and reader_id = $1) as opened_count,\n' +
     '(select count(order_status) from orders where order_status = \'closed\' and reader_id = $1) as closed_count,\n' +
 	'(select count(order_status) from orders where order_status = \'overdued\'and reader_id = $1) as overdued_count\n' +
 	'from orders join readers using(reader_id)\n' +
     'where reader_id = $1\n' +
-    'group by first_name, last_name;';
+    'group by first_name, last_name;'
 
 // Update
 exports.UPDATE_QUERY = 'update orders set order_status = \'overdued\' where return_date < now()  - interval \'1 day\'  and isperpetual = false;\n' +
-    'select * from orders;';
+    'select * from orders;'
