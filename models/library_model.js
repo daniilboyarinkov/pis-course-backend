@@ -46,7 +46,7 @@ exports.updateLibrary = (id, body) => {
         pool.query(UPDATE_LIBRARY_QUERY, [address, id],
             (error, results) => {
                 if (error) reject(error?.message);
-                if (results?.rowCount === 0) reject("Couldn't create a new book")
+                if (results?.rowCount === 0) reject("Couldn't update a new book")
                 resolve({success: true, data: `A new product has been added.`})
             })
     })

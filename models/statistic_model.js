@@ -1,7 +1,7 @@
 const db_config = require('../config/db')
 const {
     BOOK_STATISTIC,
-    ORDERS_STATISTIC,
+    LIBRARY_STATISTIC,
     READER_STATISTIC,
 } = require('../config/queries');
 
@@ -19,7 +19,7 @@ exports.getBookStatistic = (id) => {
 
 exports.getOrdersStatistic = (id) => {
     return new Promise(function (resolve, reject) {
-        pool.query(ORDERS_STATISTIC, [id], (error, results) => {
+        pool.query(LIBRARY_STATISTIC, [id], (error, results) => {
             if (error) reject(error);
             resolve(results.rows[0]);
         })

@@ -34,12 +34,12 @@ router.get('/:id', function(req, res) {
 });
 
 router.post('/:id', function(req, res) {
-    updateLibrary(req.body)
+    updateLibrary(req.params.id, req.body)
         .then(response => {
             res.status(200).send(response);
         })
         .catch(error => {
-            res.status(500).send(error);
+            res.status(500).send(error.message);
         })
 });
 

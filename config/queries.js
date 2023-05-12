@@ -14,16 +14,17 @@ exports.DELETE_BOOK_QUERY = 'delete from books\n' +
     'where book_id = $1;';
 
 // Order
-exports.GET_ORDER_QUERY = 'select order_id, reader_id, library_id, book_id, to_char(taken_date, \'DD.MM.YYYY\'), to_char(return_date, \'DD.MM.YYYY\'), \n' +
-	'to_char(close_date, \'DD.MM.YYYY\'), order_status, islongterm, isperpetual \n' +
+exports.GET_ORDER_QUERY = 'select order_id, reader_id, library_id, book_id, to_char(taken_date, \'DD.MM.YYYY\') as taken_date, to_char(return_date, \'DD.MM.YYYY\') as return_date, \n' +
+	'to_char(close_date, \'DD.MM.YYYY\') as close_date, order_status, islongterm, isperpetual \n' +
     'from orders\n' +
     'where order_id = $1;';
-exports.GET_ALL_ORDER_QUERY = 'select order_id, reader_id, library_id, book_id, to_char(taken_date, \'DD.MM.YYYY\'), to_char(return_date, \'DD.MM.YYYY\'), \n' +
-	'to_char(close_date, \'DD.MM.YYYY\'), order_status, islongterm, isperpetual \n' +
+exports.GET_ALL_ORDER_QUERY = 'select order_id, reader_id, library_id, book_id, to_char(taken_date, \'DD.MM.YYYY\') as taken_date, to_char(return_date, \'DD.MM.YYYY\') as return_date, \n' +
+	'to_char(close_date, \'DD.MM.YYYY\') as close_date, order_status, islongterm, isperpetual \n' +
     'from orders\n' +
     'order by order_id;';
 exports.CREATE_ORDER_QUERY = 'insert into orders (order_id, reader_id, library_id, book_id, islongterm, isperpetual)\n' +
-    'values((select max(order_id)+1 from orders), $1, $2, $3, $4, $5);';
+    'values((select max(order_id)+1 from orders), $1, $2, $3, $4, $5);\n' +
+	'take_book();';
 exports.UPDATE_ORDER_QUERY = 'update orders \n' +
     'set reader_id = $1, library_id = $2, book_id = $3, close_date = $4, islongterm = $5, isperpetual = $6\n' +
     'where order_id = $7;';
@@ -34,7 +35,7 @@ exports.DELETE_ORDER_QUERY = 'delete from orders\n' +
 exports.GET_EVENT_QUERY = 'select event_id, library_id, to_char(start_date, \'DD.MM.YYYY\'), to_char(end_date, \'DD.MM.YYYY\'), employee_id, title, description \n' +
     'from events\n' +
 	'where event_id = $1;';
-exports.GET_ALL_EVENT_QUERY = 'select event_id, library_id, to_char(start_date, \'DD.MM.YYYY\'), to_char(end_date, \'DD.MM.YYYY\'), employee_id, title, description \n' +
+exports.GET_ALL_EVENT_QUERY = 'select event_id, library_id, to_char(start_date, \'DD.MM.YYYY\') as start_date, to_char(end_date, \'DD.MM.YYYY\') as end_date, employee_id, title, description \n' +
     'from events\n' +
     'order by event_id;';
 exports.CREATE_EVENT_QUERY = 'insert into events (event_id, library_id, start_date, end_date, employee_id, title, description)\n' +
@@ -113,7 +114,7 @@ exports.BOOK_STATISTIC = 'select book_id, to_char(registration_date, \'DD.MM.YYY
     'from books join orders using(book_id) \n' +
     'where book_id = $1\n' +
     'group by books.book_id;'
-exports.ORDERS_STATISTIC = 'select order_status, count(order_status)\n' +
+exports.LIBRARY_STATISTIC = 'select order_status, count(order_status)\n' +
     'from orders\n' +
     'where library_id = $1\n' +
     'group by order_status;'
@@ -126,5 +127,5 @@ exports.READER_STATISTIC = 'select distinct CONCAT(first_name, last_name) as ful
     'group by first_name, last_name;'
 
 // Update
-exports.UPDATE_QUERY = 'update orders set order_status = \'overdued\' where return_date < now()  - interval \'1 day\'  and isperpetual = false;\n' +
+exports.UPDATE_QUERY = 'update orders set order_status = \'overdued\' where return_date < now()  - interval \'1 day\' and isperpetual = false and order_status = \'opened\';\n' +
     'select * from orders;'
