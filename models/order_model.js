@@ -30,7 +30,6 @@ exports.getAllOrders = () => {
 
 exports.createOrder = (body) => {
     return new Promise(function (resolve, reject) {
-        // console.log(body)
         const { reader_id, book_id, library_id, isLongTerm = false, isPerpetual = false } = body
         pool.query(CREATE_ORDER_QUERY, [reader_id, book_id, library_id, isLongTerm, isPerpetual],
             (error, results) => {
@@ -40,11 +39,11 @@ exports.createOrder = (body) => {
             })
     })
 }
-
 exports.updateOrder = (id, body) => {
     return new Promise(function (resolve, reject) {
-        const { reader_id, library_id, islongterm, isperpetual } = body
-        pool.query(UPDATE_ORDER_QUERY, [reader_id, library_id, islongterm, isperpetual],
+        console.log('lol', body)
+        const { reader_id, library_id, book_id, close_date, islongterm, isperpetual } = body
+        pool.query(UPDATE_ORDER_QUERY, [reader_id, library_id, book_id, close_date, islongterm, isperpetual, id],
             (error, results) => {
                 if (error) reject(error?.message);
                 if (results?.rowCount === 0) reject("Couldn't create a new order")

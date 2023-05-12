@@ -34,7 +34,7 @@ router.get('/:id', function(req, res) {
 });
 
 router.post('/:id', function(req, res) {
-    updateOrder(req.body)
+    updateOrder(req.params.id, req.body)
         .then(response => {
             res.status(200).send(response);
         })

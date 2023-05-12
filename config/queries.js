@@ -22,12 +22,8 @@ exports.GET_ALL_ORDER_QUERY = 'select order_id, reader_id, library_id, book_id, 
 	'to_char(close_date, \'DD.MM.YYYY\') as close_date, order_status, islongterm, isperpetual \n' +
     'from orders\n' +
     'order by order_id;';
-exports.CREATE_ORDER_QUERY = 'insert into orders (order_id, reader_id, library_id, book_id, islongterm, isperpetual)\n' +
-    'values((select max(order_id)+1 from orders), $1, $2, $3, $4, $5);\n' +
-	'take_book();';
-exports.UPDATE_ORDER_QUERY = 'update orders \n' +
-    'set reader_id = $1, library_id = $2, book_id = $3, close_date = $4, islongterm = $5, isperpetual = $6\n' +
-    'where order_id = $7;';
+exports.CREATE_ORDER_QUERY = 'call addOrder($1, $2, $3, $4, $5)';
+exports.UPDATE_ORDER_QUERY = 'call update_order($1, $2, $3, $4, $5, $6, $7)'
 exports.DELETE_ORDER_QUERY = 'delete from orders\n' +
     'where order_id = $1;';
 
@@ -94,9 +90,6 @@ exports.DELETE_READER_QUERY = 'delete from readers\n' +
 exports.GET_ALL_STORE_QUERY = 'select *\n' +
     'from store\n' +
     'order by library_id, book_id;';
-exports.GET_STORE_QUERY = 'select *\n' +
-    'from store\n' +
-    'where book_id = $1, library_id = $2;'
 exports.CREATE_STORE_QUERY = 'insert into store (library_id, book_id, count)\n' +
     'values($1, $2, $3);';
 exports.UPDATE_STORE_QUERY = 'update store \n' +
