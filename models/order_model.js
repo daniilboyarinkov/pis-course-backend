@@ -4,7 +4,8 @@ const {
     DELETE_ORDER_QUERY,
     GET_ALL_ORDER_QUERY,
     GET_ORDER_QUERY,
-    UPDATE_ORDER_QUERY
+    UPDATE_ORDER_QUERY,
+    CLOSE_ORDER_QUERY,
 } = require('../config/queries');
 
 const Pool = require('pg').Pool
@@ -41,9 +42,18 @@ exports.createOrder = (body) => {
 }
 exports.updateOrder = (id, body) => {
     return new Promise(function (resolve, reject) {
-        console.log('lol', body)
         const { reader_id, library_id, book_id, close_date, islongterm, isperpetual } = body
         pool.query(UPDATE_ORDER_QUERY, [reader_id, library_id, book_id, close_date, islongterm, isperpetual, id],
+            (error, results) => {
+                if (error) reject(error?.message);
+                if (results?.rowCount === 0) reject("Couldn't create a new order")
+                resolve({success: true, data: `A new order has been added.`})
+            })
+    })
+}
+exports.closeOrder = (id) => {
+    return new Promise(function (resolve, reject) {
+        pool.query(CLOSE_ORDER_QUERY, [id],
             (error, results) => {
                 if (error) reject(error?.message);
                 if (results?.rowCount === 0) reject("Couldn't create a new order")

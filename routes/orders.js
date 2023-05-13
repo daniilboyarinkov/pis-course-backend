@@ -1,5 +1,5 @@
 const express = require('express');
-const {getAllOrders, createOrder, deleteOrder, getOrder, updateOrder} = require('../models/order_model');
+const {getAllOrders, createOrder, deleteOrder, getOrder, updateOrder, closeOrder} = require('../models/order_model');
 
 const router = express.Router();
 
@@ -30,6 +30,16 @@ router.get('/:id', function(req, res) {
         })
         .catch(error => {
             res.status(500).send(error);
+        })
+});
+
+router.post('/:id/close', function(req, res) {
+    closeOrder(req.params.id)
+        .then(response => {
+            res.status(200).send(response);
+        })
+        .catch(error => {
+            res.status(500).send(error.message);
         })
 });
 

@@ -3,10 +3,30 @@ const {
     BOOK_STATISTIC,
     LIBRARY_STATISTIC,
     READER_STATISTIC,
+    USER_BOOKS,
+    TAKEN_BOOKS,
 } = require('../config/queries');
 
 const Pool = require('pg').Pool
 const pool = new Pool(db_config);
+
+exports.getUserBooks = (id) => {
+    return new Promise(function (resolve, reject) {
+        pool.query(USER_BOOKS, [id], (error, results) => {
+            if (error) reject(error.message);
+            if (results) resolve(results.rows);
+        })
+    })
+}
+
+exports.getTakenBooks = () => {
+    return new Promise(function (resolve, reject) {
+        pool.query(TAKEN_BOOKS, (error, results) => {
+            if (error) reject(error.message);
+            if (results) resolve(results.rows);
+        })
+    })
+}
 
 exports.getBookStatistic = (id) => {
     return new Promise(function (resolve, reject) {

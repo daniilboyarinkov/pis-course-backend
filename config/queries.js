@@ -26,6 +26,7 @@ exports.CREATE_ORDER_QUERY = 'call addOrder($1, $2, $3, $4, $5)';
 exports.UPDATE_ORDER_QUERY = 'call update_order($1, $2, $3, $4, $5, $6, $7)'
 exports.DELETE_ORDER_QUERY = 'delete from orders\n' +
     'where order_id = $1;';
+exports.CLOSE_ORDER_QUERY = 'call close_order($1);';
 
 // Event
 exports.GET_EVENT_QUERY = 'select event_id, library_id, to_char(start_date, \'DD.MM.YYYY\'), to_char(end_date, \'DD.MM.YYYY\'), employee_id, title, description \n' +
@@ -111,13 +112,18 @@ exports.LIBRARY_STATISTIC = 'select order_status, count(order_status)\n' +
     'from orders\n' +
     'where library_id = $1\n' +
     'group by order_status;'
-exports.READER_STATISTIC = 'select distinct CONCAT(first_name, last_name) as full_name,\n' +
+exports.READER_STATISTIC = 'select distinct CONCAT(first_name, \' \', last_name) as full_name,\n' +
 	'(select count(order_status) from orders where order_status = \'opened\' and reader_id = $1) as opened_count,\n' +
     '(select count(order_status) from orders where order_status = \'closed\' and reader_id = $1) as closed_count,\n' +
 	'(select count(order_status) from orders where order_status = \'overdued\'and reader_id = $1) as overdued_count\n' +
 	'from orders join readers using(reader_id)\n' +
     'where reader_id = $1\n' +
     'group by first_name, last_name;'
+exports.TAKEN_BOOKS = 'select reader_id, book_id\n' +
+	'from orders;';
+exports.USER_BOOKS = 'select book_id\n' +
+	'from orders\n' +
+	'where reader_id = $1;\n';
 
 // Update
 exports.UPDATE_QUERY = 'update orders set order_status = \'overdued\' where return_date < now()  - interval \'1 day\' and isperpetual = false and order_status = \'opened\';\n' +

@@ -29,17 +29,17 @@ router.get('/:id', function(req, res) {
             res.status(200).send(response);
         })
         .catch(error => {
-            res.status(500).send(error);
+            res.status(500).send(error.message);
         })
 });
 
 router.post('/:id', function(req, res) {
-    updateEmployee(req.body)
+    updateEmployee(req.params.id, req.body)
         .then(response => {
             res.status(200).send(response);
         })
         .catch(error => {
-            res.status(500).send(error);
+            res.status(500).send(error.message);
         })
 });
 
